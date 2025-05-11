@@ -4,15 +4,16 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { BsArrowRight, BsYoutube } from 'react-icons/bs';
 import { arrowVariant, headerVariant, infoVariant } from '@/lib/framer-variants';
-import AutoplaySlider from '@/components/public/components/AutoplaySlider';
+import AutoplaySlider from '@/components/ui/autoplay-slider';
 import { Logos } from '@/lib/data/logos';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { routes } from '@/lib/routes';
 
 const HeroSection: React.FC = () => {
   return (
     <motion.section className="home-section relative items-center bg-white px-3 pt-16 pb-7 sm:px-8">
-      <div className="home-container my-12">
+      <div className="home-container my-12 w-full">
         <motion.div
           variants={headerVariant}
           animate="animate"
@@ -27,23 +28,28 @@ const HeroSection: React.FC = () => {
         {/* Info */}
         <motion.div variants={infoVariant} animate="animate" initial="static">
           <div className="info-container mt-4 text-center font-light text-[#222]">
-            <p className="m-auto w-full lg:w-3/4 lg:text-lg">
-              Connect to diverse data sources, automate advanced data analysis processes and
-              generate dashboards, reports, and predictive insights to supercharge accuracy &
-              efficiency.
+            <p className="m-auto px-5 leading-relaxed sm:px-10 lg:w-3/4 lg:text-lg">
+              Connect to diverse data sources, automate advanced data analysis processes generate
+              dashboards, reports, & predictive insights to supercharge accuracy & efficiency.
             </p>
           </div>
 
           {/* Buttons */}
+
           <div className="buttons-container mt-8 flex items-center justify-center space-x-3 sm:space-x-5">
-            <Button type="button" size={'lg'}>
-              <span>Get Started</span>
-              <motion.div variants={arrowVariant} animate="animate" initial="static">
-                <BsArrowRight className="size-6" />
-              </motion.div>
-            </Button>
+            <Link
+              className="cursor-pointer"
+              href={`${routes.account.login.path}?${routes.account.authQueryKey}=${routes.account.signup.query.value}`}
+            >
+              <Button type="button" size={'lg'}>
+                <span>Get Started</span>
+                <motion.div variants={arrowVariant} animate="animate" initial="static">
+                  <BsArrowRight className="size-6" />
+                </motion.div>
+              </Button>
+            </Link>
             <Link href={'/'}>
-              <Button type="button" size={'lg'} variant={'outline'}>
+              <Button type="button" size={'lg'} variant={'outline'} className="border-black">
                 <span>Learn More</span>
                 <BsYoutube className="size-6" />
               </Button>

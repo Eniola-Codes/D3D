@@ -1,3 +1,4 @@
+import { StaticImageData } from 'next/image';
 import {
   abc,
   aljazeera,
@@ -19,7 +20,7 @@ import {
 } from '../../../public/assets/logo';
 
 interface LogoItem {
-  item: any;
+  item: StaticImageData;
 }
 
 export const Logos: LogoItem[] = [
