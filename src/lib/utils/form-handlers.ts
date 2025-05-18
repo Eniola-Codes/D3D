@@ -5,7 +5,7 @@ type FormData = {
   email: string;
   password: string;
   confirmPassword?: string;
-  [key: string]: any;
+  [key: string]: string | undefined;
 };
 
 export const createFormHandler = (
@@ -30,10 +30,10 @@ export const createFormHandler = (
 };
 
 // Generic form validation handler
-export const createValidationHandler = (
-  schema: z.ZodType<any>,
-  formData: FormData,
-  setErrors: React.Dispatch<React.SetStateAction<FormErrors>>
+export const createValidationHandler = <T>(
+  schema: z.ZodType<T>,
+  formData: T,
+  setErrors: React.Dispatch<React.SetStateAction<Partial<Record<keyof T, string>>>>
 ) => {
   return () => {
     try {
@@ -42,10 +42,10 @@ export const createValidationHandler = (
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const newErrors: FormErrors = {};
+        const newErrors: Partial<Record<keyof T, string>> = {};
         error.errors.forEach(err => {
           if (err.path[0]) {
-            newErrors[err.path[0] as keyof FormErrors] = err.message;
+            newErrors[err.path[0] as keyof T] = err.message;
           }
         });
         setErrors(newErrors);

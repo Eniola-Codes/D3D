@@ -15,6 +15,7 @@ import { apiService } from '@/lib/services/api';
 import { AuthResponse, FormData } from '../../../../types/user';
 import { toastFunc } from '@/lib/utils/toasts';
 import { Loader2 } from 'lucide-react';
+import axios from 'axios';
 
 export function LoginSignup({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const searchParams = useSearchParams();
@@ -56,8 +57,17 @@ export function LoginSignup({ className, ...props }: React.ComponentPropsWithout
       });
 
       toastFunc(response.message, '#DCFCE7', '#22C55E', '#22C55E');
-    } catch (error: any) {
-      toastFunc(error.response.data.message, '#FDECEA', '#EF4444', '#EF4444');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        toastFunc(error.response.data.message, '#FDECEA', '#EF4444', '#EF4444');
+      } else {
+        toastFunc(
+          'An unexpected error occurred, please try again.',
+          '#FDECEA',
+          '#EF4444',
+          '#EF4444'
+        );
+      }
     } finally {
       setIsLoading(false);
     }

@@ -17,14 +17,14 @@ export const apiService = {
   },
 
   // POST request
-  post: async <T>(url: string, data?: any) => {
-    const response = await api.post<T>(url, data);
+  post: async <TResponse, TRequest = unknown>(url: string, data: TRequest): Promise<TResponse> => {
+    const response = await api.post<TResponse>(url, data);
     return response.data;
   },
 
   // PUT request
-  put: async <T>(url: string, data?: any) => {
-    const response = await api.put<T>(url, data);
+  put: async <TResponse, TRequest = unknown>(url: string, data: TRequest): Promise<TResponse> => {
+    const response = await api.put<TResponse>(url, data);
     return response.data;
   },
 
