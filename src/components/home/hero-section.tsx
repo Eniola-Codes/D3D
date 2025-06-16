@@ -3,12 +3,12 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { BsArrowRight, BsYoutube } from 'react-icons/bs';
-import { arrowVariant, headerVariant, infoVariant } from '@/lib/framer-variants';
+import { arrowVariant, headerVariant, infoVariant } from '@/lib/utils/framer-variants';
 import AutoplaySlider from '@/components/ui/autoplay-slider';
 import { Logos } from '@/lib/data/logos';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { routes } from '@/lib/routes';
+import { routes } from '@/lib/constants/page-routes';
 
 const HeroSection: React.FC = () => {
   return (
@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
           <div className="buttons-container mt-8 flex items-center justify-center space-x-3 sm:space-x-5">
             <Link
               className="cursor-pointer"
-              href={`${routes.account.login.path}?${routes.account.authQueryKey}=${routes.account.signup.query.value}`}
+              href={`${routes.account.path}?${routes.account.keys.auth}=${routes.account.query.signup}`}
             >
               <Button type="button" size={'lg'}>
                 <span>Get Started</span>

@@ -15,6 +15,7 @@ export const loginSchema = z.object({
 export const signupSchema = z
   .object({
     ...baseAuthSchema,
+    name: z.string().trim().min(3, 'Name must be at least 3 characters'),
     confirmPassword: z.string(),
   })
   .refine(data => data.password === data.confirmPassword, {
@@ -38,13 +39,25 @@ export const resetPasswordSchema = z
     path: ['confirmPassword'],
   });
 
+// OTP validation schema
+export const otpSchema = z.object({
+  otp: z
+    .string()
+    .min(6, 'OTP must be 6 digits')
+    .max(6, 'OTP must be 6 digits')
+    .regex(/^\d+$/, 'OTP must contain only numbers'),
+});
+
 // Types for form data
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type SignupFormData = z.infer<typeof signupSchema>;
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+export type OtpFormData = z.infer<typeof otpSchema>;
 export type FormErrors = {
+  name?: string;
   email?: string;
   password?: string;
   confirmPassword?: string;
+  otp?: string;
 };

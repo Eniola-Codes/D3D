@@ -1,3 +1,3 @@
-import authBg from './auth-bg.jpg';
+import authBg from './auth-bg.png';
 
 export { authBg };

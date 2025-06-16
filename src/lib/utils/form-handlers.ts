@@ -1,51 +1,32 @@
-import { type FormErrors } from '@/lib/validations/auth';
+import { Dispatch, SetStateAction } from 'react';
 import { z } from 'zod';
 
-type FormData = {
-  email: string;
-  password: string;
-  confirmPassword?: string;
-  [key: string]: string | undefined;
-};
-
-export const createFormHandler = (
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>,
-  setErrors: React.Dispatch<React.SetStateAction<FormErrors>>
+export const createFormHandler = <T extends Record<string, unknown>>(
+  setFormData: Dispatch<SetStateAction<T>>,
+  setErrors: Dispatch<SetStateAction<Record<string, string>>>
 ) => {
   return (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-
-    setFormData(prev => ({
-      ...prev,
-      [id]: value,
-    }));
-
-    if (setErrors) {
-      setErrors(prev => ({
-        ...prev,
-        [id]: undefined,
-      }));
-    }
+    setFormData(prev => ({ ...prev, [id]: value }));
+    setErrors(prev => ({ ...prev, [id]: '' }));
   };
 };
 
-// Generic form validation handler
-export const createValidationHandler = <T>(
+export const createValidationHandler = <T extends Record<string, unknown>>(
   schema: z.ZodType<T>,
   formData: T,
-  setErrors: React.Dispatch<React.SetStateAction<Partial<Record<keyof T, string>>>>
+  setErrors: Dispatch<SetStateAction<Record<string, string>>>
 ) => {
   return () => {
     try {
       schema.parse(formData);
-      setErrors({});
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const newErrors: Partial<Record<keyof T, string>> = {};
+        const newErrors: Record<string, string> = {};
         error.errors.forEach(err => {
           if (err.path[0]) {
-            newErrors[err.path[0] as keyof T] = err.message;
+            newErrors[err.path[0].toString()] = err.message;
           }
         });
         setErrors(newErrors);
