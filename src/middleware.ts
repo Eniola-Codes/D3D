@@ -6,7 +6,7 @@ import { endpoints } from './lib/constants/endpoints';
 import { cookieOptionsAuth } from './lib/utils/cookie';
 
 export const config = {
-  matcher: ['/account, /dashboard/:path*'],
+  matcher: ['/account', '/dashboard/:path*'],
 };
 
 export async function middleware(request: NextRequest) {

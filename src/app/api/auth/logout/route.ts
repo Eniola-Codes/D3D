@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     response.cookies.set(AUTH_TOKEN, '', cookieOptionsUnAuth);
 
     return response;
-  } catch(err: unknown) {
+  } catch (err: unknown) {
     if (isAxiosError(err) && err.response) {
       return NextResponse.json(
         {
