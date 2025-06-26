@@ -7,6 +7,7 @@ import { cookieOptionsAuth } from '@/lib/utils/cookie';
 import { apiServerService } from '@/lib/services/api/server';
 import { routes } from '@/lib/constants/page-routes';
 import { AUTH_FAILED } from '@/lib/constants/messages';
+import { isAxiosError } from 'axios';
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,12 +31,20 @@ export async function POST(req: NextRequest) {
     response.cookies.set(AUTH_TOKEN, res.token, cookieOptionsAuth);
 
     return response;
-  } catch {
+  } catch (err: unknown) {
+    if (isAxiosError(err) && err.response) {
+      return NextResponse.json(
+        {
+          message: err.response.data?.message || AUTH_FAILED,
+        },
+        { status: err.response.status }
+      );
+    }
     return NextResponse.json(
       {
         message: AUTH_FAILED,
       },
-      { status: 401 }
+      { status: 500 }
     );
   }
 }
