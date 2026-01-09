@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import { routes } from '../constants/page-routes';
 import { AUTH_TOKEN } from '../constants';
 import { cookieOptionsAuth } from './cookie';
-// import { jwtVerify } from 'jose';
-import { endpoints } from '../constants/endpoints';
+import { jwtVerify } from 'jose';
 
 export const setCookieHandler = (
   newPageRedirect: (url: string) => NextResponse,
@@ -43,29 +42,17 @@ export const verifyAuthHandler = (
   return undefined;
 };
 
-export const verifyAuthToken = async (token: string): Promise<Response> => {
-  return fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}${endpoints.auth.base}${endpoints.auth.verifyAuth}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+export const verifyAuthToken = async (
+  token: string
+): Promise<{ status: number; error?: string }> => {
+  try {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    await jwtVerify(token, secret, {
+      algorithms: ['HS256'],
+    });
+    return { status: 200 };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return { status: 401, error: errorMessage };
+  }
 };
-
-// export const verifyAuthToken = async (
-//   token: string
-// ): Promise<{ status: number; error?: string }> => {
-//   try {
-//     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-//     await jwtVerify(token, secret, {
-//       algorithms: ['HS256'],
-//     });
-//     return { status: 200 };
-//   } catch (error) {
-//     const errorMessage = error instanceof Error ? error.message : String(error);
-//     return { status: 401, error: errorMessage };
-//   }
-// };
