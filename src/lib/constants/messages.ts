@@ -1,3 +1,10 @@
 export const UNEXPECTED_ERROR = 'An unexpected error occurred, please try again.';
 export const AUTH_FAILED = 'User authentication failed.';
 export const LOGOUT_FAILED = 'Logout Unsuccessful.';
+export const VALID_EMAIL_ADDRESS = 'Please enter a valid email address';
+export const VALID_PASSWORD_LENGTH = 'Password must be at least 8 characters';
+export const VALID_NAME_LENGTH = 'Name must be at least 2 characters';
+export const PASSWORD_DOES_NOT_MATCH = "Passwords don't match";
+export const VALID_OTP_LENGTH = 'OTP must be 6 digits';
+export const VALID_OTP_FORMAT = 'OTP must contain only numbers';
+export const CONFIRM_PASSWORD_FIELD = 'confirmPassword';

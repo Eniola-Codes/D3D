@@ -1,25 +1,14 @@
 'use client';
 
 import { cn } from '@/lib/utils/class-merge';
-import { useRouter } from 'next/navigation';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { Button } from '@/components/ui/button';
-import { routes } from '@/lib/constants/page-routes';
-import { inputOTPProps } from '../../../interfaces/auth';
+import { InputOTPProps } from '../../../interfaces/auth';
 import { useOtpForm } from './hooks/verify-otp';
 import { Loader2 } from 'lucide-react';
 
-export function VerifyOTP({ className, email, ...props }: inputOTPProps) {
-  const router = useRouter();
-
-  const { otp, errors, isLoading, handleChange, handleSubmit, resendOtp } = useOtpForm(
-    email,
-    otp => {
-      router.push(
-        `?${routes.account.keys.auth}=${routes.account.query.resetPassword}&email=${email}&otp=${otp}`
-      );
-    }
-  );
+export function VerifyOTP({ className, email, ...props }: InputOTPProps) {
+  const { otp, errors, isLoading, handleChange, handleSubmit, resendOtp } = useOtpForm(email);
 
   return (
     <form

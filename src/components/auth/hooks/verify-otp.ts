@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import { toastFunc } from '@/lib/utils/toasts';
-import { createValidationHandler } from '@/lib/utils/form-handlers';
-import { otpSchema, FormErrors } from '@/lib/validations/auth';
-import { UNEXPECTED_ERROR } from '@/lib/constants/messages';
-import axios from 'axios';
-import { authService } from '@/lib/services/api/auth';
+import {
+  createValidationHandler,
+  submitForgetPasswordFormData,
+  submitVerifyOtpFormData,
+} from '@/lib/utils/auth/form-handlers';
+import { otpSchema, FormErrors } from '@/lib/utils/auth/validations';
+import { routes } from '@/lib/constants/page-routes';
+import { useRouter } from 'next/navigation';
 
-export function useOtpForm(email: string, onSuccess: (otp: string) => void) {
+export function useOtpForm(email: string) {
+  const router = useRouter();
   const [otp, setOtp] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = createValidationHandler(otpSchema, { otp }, setErrors);
-
   const handleChange = (value: string) => {
     setOtp(value);
     if (errors.otp) {
@@ -22,37 +24,20 @@ export function useOtpForm(email: string, onSuccess: (otp: string) => void) {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
     setIsLoading(true);
-    try {
-      const res = await authService.verifyOtp(email, otp);
-      toastFunc(res.message, true);
-      onSuccess(otp);
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        toastFunc(error.response.data.message, false);
-      } else {
-        toastFunc(UNEXPECTED_ERROR, false);
-      }
-    } finally {
-      setIsLoading(false);
+    const otpcode = await submitVerifyOtpFormData(email, otp);
+    if (otpcode) {
+      router.push(
+        `?${routes.account.keys.auth}=${routes.account.query.resetPassword}&email=${email}&otp=${otpcode}`
+      );
     }
+    setIsLoading(false);
   };
 
   const resendOtp = async () => {
     setIsLoading(true);
-    try {
-      const res = await authService.forgotPassword(email);
-      toastFunc(res.message, true);
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        toastFunc(error.response.data.message, false);
-      } else {
-        toastFunc(UNEXPECTED_ERROR, false);
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    await submitForgetPasswordFormData(email);
+    setIsLoading(false);
   };
 
   return {

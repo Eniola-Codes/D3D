@@ -11,12 +11,7 @@ import { useForgetPasswordForm } from './hooks/forget-password';
 
 export function ForgetPassword({ className, ...props }: React.ComponentPropsWithoutRef<'form'>) {
   const router = useRouter();
-
-  const { formData, errors, isLoading, handleInputChange, handleSubmit } = useForgetPasswordForm(
-    (email: string) => {
-      router.push(`?${routes.account.keys.auth}=${routes.account.query.inputOTP}&email=${email}`);
-    }
-  );
+  const { formData, errors, isLoading, handleInputChange, handleSubmit } = useForgetPasswordForm();
 
   return (
     <form
