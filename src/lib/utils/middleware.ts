@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { routes } from '../constants/page-routes';
 import { AUTH_TOKEN } from '../constants';
 import { cookieOptionsAuth } from './cookie';
-import { jwtVerify } from 'jose';
+// import { jwtVerify } from 'jose';
 import { endpoints } from '../constants/endpoints';
 
 export const setCookieHandler = (
