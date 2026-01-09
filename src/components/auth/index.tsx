@@ -3,9 +3,9 @@ import { ForgetPassword } from './forget-password';
 import { VerifyOTP } from './verify-otp';
 import { ResetPassword } from './reset-password';
 import { routes } from '@/lib/constants/page-routes';
-import { urlQueryParams } from '../../../interfaces/auth';
+import { UrlQueryParams } from '../../../interfaces/auth';
 
-export const AuthForms: React.FC<{ params: urlQueryParams }> = ({ params }) => {
+export const AuthForms: React.FC<{ params: UrlQueryParams }> = ({ params }) => {
   const { auth, mail, otp, error } = params;
 
   return (

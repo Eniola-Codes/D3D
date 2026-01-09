@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { toastFunc } from '@/lib/utils/toasts';
 import {
   forgotPasswordSchema,
   type ForgotPasswordFormData,
   type FormErrors,
-} from '@/lib/validations/auth';
-import { createFormHandler, createValidationHandler } from '@/lib/utils/form-handlers';
-import { authService } from '@/lib/services/api/auth';
-import { UNEXPECTED_ERROR } from '@/lib/constants/messages';
-import axios from 'axios';
+} from '@/lib/utils/auth/validations';
+import {
+  createFormHandler,
+  createValidationHandler,
+  submitForgetPasswordFormData,
+} from '@/lib/utils/auth/form-handlers';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/lib/constants/page-routes';
 
-export function useForgetPasswordForm(onSuccess: (email: string) => void) {
+export function useForgetPasswordForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState<ForgotPasswordFormData>({ email: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -20,21 +23,12 @@ export function useForgetPasswordForm(onSuccess: (email: string) => void) {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
     setIsLoading(true);
-    try {
-      const response = await authService.forgotPassword(formData.email);
-      toastFunc(response.message, true);
-      onSuccess(formData.email);
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        toastFunc(error.response.data.message, false);
-      } else {
-        toastFunc(UNEXPECTED_ERROR, false);
-      }
-    } finally {
-      setIsLoading(false);
+    const email = await submitForgetPasswordFormData(formData.email);
+    if (email) {
+      router.push(`?${routes.account.keys.auth}=${routes.account.query.inputOTP}&email=${email}`);
     }
+    setIsLoading(false);
   };
 
   return {

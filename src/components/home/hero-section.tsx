@@ -12,7 +12,7 @@ import { routes } from '@/lib/constants/page-routes';
 
 const HeroSection: React.FC = () => {
   return (
-    <motion.section className="home-section relative items-center bg-white px-3 pt-16 pb-7 sm:px-8">
+    <section className="home-section relative items-center bg-white px-3 pt-16 pb-7 sm:px-8">
       <div className="home-container my-12 w-full">
         <motion.div
           variants={headerVariant}
@@ -79,7 +79,7 @@ const HeroSection: React.FC = () => {
           </div>
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

@@ -1,12 +1,19 @@
 import { useState } from 'react';
-import { FormErrors, ResetPasswordFormData, resetPasswordSchema } from '@/lib/validations/auth';
-import { toastFunc } from '@/lib/utils/toasts';
-import { createFormHandler, createValidationHandler } from '@/lib/utils/form-handlers';
-import { authService } from '@/lib/services/api/auth';
-import { UNEXPECTED_ERROR } from '@/lib/constants/messages';
-import axios from 'axios';
+import {
+  FormErrors,
+  ResetPasswordFormData,
+  resetPasswordSchema,
+} from '@/lib/utils/auth/validations';
+import {
+  createFormHandler,
+  createValidationHandler,
+  submitResetPasswordFormData,
+} from '@/lib/utils/auth/form-handlers';
+import { routes } from '@/lib/constants/page-routes';
+import { useRouter } from 'next/navigation';
 
-export function useResetPasswordForm(email: string, token: string, onSuccess: () => void) {
+export function useResetPasswordForm(email: string, token: string) {
+  const router = useRouter();
   const [formData, setFormData] = useState<ResetPasswordFormData>({
     password: '',
     confirmPassword: '',
@@ -19,21 +26,12 @@ export function useResetPasswordForm(email: string, token: string, onSuccess: ()
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
     setIsLoading(true);
-    try {
-      const response = await authService.resetPassword(email, token, formData.password);
-      toastFunc(response.message, true);
-      onSuccess();
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response) {
-        toastFunc(error.response.data.message, false);
-      } else {
-        toastFunc(UNEXPECTED_ERROR, false);
-      }
-    } finally {
-      setIsLoading(false);
+    const result = await submitResetPasswordFormData(email, token, formData.password);
+    if (result) {
+      router.push(`?${routes.account.keys.auth}=${routes.account.query.login}`);
     }
+    setIsLoading(false);
   };
 
   return {

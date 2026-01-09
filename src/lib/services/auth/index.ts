@@ -1,7 +1,7 @@
 import { apiClientService } from '@/lib/services/api/client';
 import { endpoints } from '@/lib/constants/endpoints';
 import axios from 'axios';
-import { AuthResponse, LogoutResponse } from '../../../../../interfaces/auth';
+import { AuthResponse, LogoutResponse } from '../../../../interfaces/auth';
 
 export const authService = {
   async forgotPassword(email: string) {
@@ -35,7 +35,12 @@ export const authService = {
   async loginOrSignup(email: string, name: string, password: string, authParam: string) {
     return axios.post<AuthResponse>(
       `${endpoints.base}${endpoints.auth.base}`,
-      { email, name, password, authParam },
+      {
+        email,
+        name,
+        password,
+        authParam,
+      },
       {
         withCredentials: true,
       }

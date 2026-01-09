@@ -4,21 +4,14 @@ import { cn } from '@/lib/utils/class-merge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useRouter } from 'next/navigation';
-import { routes } from '@/lib/constants/page-routes';
-import { resetPasswordProps } from '../../../interfaces/auth';
+import { ResetPasswordProps } from '../../../interfaces/auth';
 import { Loader2 } from 'lucide-react';
 import { useResetPasswordForm } from './hooks/reset-password';
 
-export function ResetPassword({ className, email, token, ...props }: resetPasswordProps) {
-  const router = useRouter();
-
+export function ResetPassword({ className, email, token, ...props }: ResetPasswordProps) {
   const { formData, errors, isLoading, handleInputChange, handleSubmit } = useResetPasswordForm(
     email,
-    token,
-    () => {
-      router.push(`?${routes.account.keys.auth}=${routes.account.query.login}`);
-    }
+    token
   );
 
   return (

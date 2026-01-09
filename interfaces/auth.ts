@@ -10,36 +10,34 @@ export interface AuthResponse {
 export interface LogoutResponse {
   message: string;
 }
-
 export interface AuthFormData {
   email: string;
   name: string;
   password: string;
   confirmPassword: string;
-  [key: string]: string;
 }
-
 export interface LoginSignupProps extends React.ComponentPropsWithoutRef<'form'> {
   authParam: string;
-  errorParam: string | undefined;
+  errorParam?: string;
 }
 
-export interface inputOTPProps extends React.ComponentPropsWithoutRef<'form'> {
+export interface InputOTPProps extends React.ComponentPropsWithoutRef<'form'> {
   email: string;
 }
 
-export interface resetPasswordProps extends React.ComponentPropsWithoutRef<'form'> {
+export interface ResetPasswordProps extends React.ComponentPropsWithoutRef<'form'> {
   email: string;
   token: string;
 }
 
-export interface searchParamPageProps {
+// Page prop types
+export interface SearchParamPageProps {
   searchParams: Record<string, string | string[] | undefined>;
 }
 
-export interface urlQueryParams {
-  auth: string | undefined;
-  mail: string | undefined;
-  otp: string | undefined;
-  error: string | undefined;
+export interface UrlQueryParams {
+  auth?: string;
+  mail?: string;
+  otp?: string;
+  error?: string;
 }

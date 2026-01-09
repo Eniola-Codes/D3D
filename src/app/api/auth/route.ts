@@ -6,8 +6,7 @@ import { endpoints } from '@/lib/constants/endpoints';
 import { cookieOptionsAuth } from '@/lib/utils/cookie';
 import { apiServerService } from '@/lib/services/api/server';
 import { routes } from '@/lib/constants/page-routes';
-import { AUTH_FAILED } from '@/lib/constants/messages';
-import { isAxiosError } from 'axios';
+import { routeErrorHandler } from '@/lib/utils/error-handler';
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,19 +31,6 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err: unknown) {
-    if (isAxiosError(err) && err.response) {
-      return NextResponse.json(
-        {
-          message: err.response.data?.message || AUTH_FAILED,
-        },
-        { status: err.response.status }
-      );
-    }
-    return NextResponse.json(
-      {
-        message: AUTH_FAILED,
-      },
-      { status: 500 }
-    );
+    return routeErrorHandler(err);
   }
 }
