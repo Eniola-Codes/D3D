@@ -5,7 +5,6 @@ import { cookies } from 'next/headers';
 export const createApiService = async (): Promise<AxiosInstance> => {
   const cookieStore = await cookies();
   const token = cookieStore.get(AUTH_TOKEN)?.value;
-  console.log('token', token);
 
   return axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
