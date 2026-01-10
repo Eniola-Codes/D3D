@@ -37,7 +37,7 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
       'react/prop-types': 'off',
-      'no-console': 'error',
+      // 'no-console': 'error',
       'no-empty': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',

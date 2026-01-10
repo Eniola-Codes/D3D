@@ -20,7 +20,9 @@ export default async function RootLayout({
   let user = null;
 
   try {
+    console.log('fetching user');
     const response = await apiServerService.get<UserResponse>(`${endpoints.user.base}/`);
+    console.log(response);
 
     if (!response.user) {
       throw new Error(AUTH_FAILED);
