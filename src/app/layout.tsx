@@ -22,6 +22,7 @@ export default async function RootLayout({
   try {
     console.log('fetching user');
     const response = await apiServerService.get<UserResponse>(`${endpoints.user.base}/`);
+    console.log('user fetched');
     console.log(response);
 
     if (!response.user) {
@@ -29,7 +30,9 @@ export default async function RootLayout({
     }
 
     user = response.user;
-  } catch {}
+  } catch(err: unknown) {
+    console.log(err);
+  }
 
   return (
     <html lang="en">
