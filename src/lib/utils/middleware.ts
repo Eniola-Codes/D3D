@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { routes } from '../constants/page-routes';
-import { AUTH_TOKEN } from '../constants';
+import { AUTH_TOKEN, JWT_ALGORITHM } from '../constants';
 import { cookieOptionsAuth } from './cookie';
 import { jwtVerify } from 'jose';
 
@@ -48,7 +48,7 @@ export const verifyAuthToken = async (
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
+      algorithms: [JWT_ALGORITHM],
     });
     return { status: 200 };
   } catch (error) {
